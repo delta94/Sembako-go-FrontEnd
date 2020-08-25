@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const register = newUser => {
     return axios
-    .post('Users/register',{
+    .post('http://localhost:4000/Users/register',{
         Nama: newUser.Nama,
         Nama_toko: newUser.Nama_toko,
         Username: newUser.Username,
@@ -11,8 +11,9 @@ export const register = newUser => {
         Roles:newUser.Roles
     })
     .then(res => {
-        console.log("Registed")
-        return res;
+        console.log("Registed");
+        localStorage.setItem('usertoken',res.data.token);
+        return res.data;
         //console.log(req.body)
     })
     .catch(err => {
@@ -23,18 +24,18 @@ export const register = newUser => {
 
 export const login = user =>{
     return axios
-    .post('users/login', {
-        Email: user.Email,
+    .post('http://localhost:4000/Users/login', {
+        Username: user.Username,
         Password: user.Password,
         Roles: user.Roles
     })
     .then(res =>{
-        
-        localStorage.setItem('usertoken',res.data)
+        console.log(res.data);
+        localStorage.setItem('usertoken',res.data.token)
         return res.data
         
     })
     .catch(err =>{
-        console.log(err,"user function")
+        return err;
     })
 }

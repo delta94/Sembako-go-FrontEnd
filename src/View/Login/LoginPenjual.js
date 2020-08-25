@@ -21,12 +21,10 @@ class LoginPenjual extends Component {
   }
   onSubmit(e) {
     e.preventDefault()
-    const token = localStorage.usertoken
-    const decoded = jwt_decode(token)
+    // const token = localStorage.usertoken
+    // const decoded = jwt_decode(token)
     this.setState({
-      Username: decoded.Username,
-      Password: decoded.Password,
-      Roles:decoded.Roles
+      Roles:"Penjual"
     })
     const user = {
       Username: this.state.Username,
@@ -34,23 +32,19 @@ class LoginPenjual extends Component {
       Roles: this.state.Roles
     }
     login(user).then(res => {
-      
-        if(this.state.Roles ==="Penjual"){
+      const decoded = jwt_decode(res.token);
+      console.log(decoded);
+        if(decoded.roles ==="Penjual"){
           this.props.history.push(`/DashboardPenjual`)
-        }else if (this.state.Roles ==="Pembeli"){
+        }else if (decoded.roles ==="Pembeli"){
           this.props.history.push(`/DashboardPembeli`)
         }else{ 
           this.props.history.push(`/profile`)
         }
+    }).catch((err)=>{
+      console.log(err);
     })
   }
-  ////*{componentDidMount(){
-    ///const token = localStorage.usertoken
-    //const decoded = jwt_decode(token)
-    ///this.setState({
-      ///Roles: decoded.Roles
-    //})
-  //}
 
   render() {
     return (
